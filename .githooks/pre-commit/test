@@ -22,7 +22,7 @@ trap cleanup EXIT SIGINT SIGHUP
 git diff > "$PATCH_FILE"
 git checkout -- .
 
-git_cached_files=$(git diff --cached --name-only --diff-filter=ACMR | xargs echo)
+git_cached_files=$(git diff --cached --name-only --diff-filter=ACMR | grep "\.js$")
 if [ "$git_cached_files" ]; then
     npm test --silent || exit 1
 fi
