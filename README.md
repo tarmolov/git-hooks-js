@@ -1,4 +1,4 @@
-# git-hooks-js
+# git-hooks-js [![NPM version](https://badge.fury.io/js/git-hooks.svg)](http://badge.fury.io/js/git-hooks)
 
 It's inspired by [git-hooks](https://github.com/icefox/git-hooks) but has several differences:
 
