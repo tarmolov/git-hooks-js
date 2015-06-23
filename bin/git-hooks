@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var cli = require('../lib/cli');
+
+program
+    .version(require('../package.json').version)
+    .usage('[options]')
+    .description('A tool to manage project Git hooks')
+    .option('--install', 'Replace existing hooks in this repository with a call git-hooks. Move old hooks directory to hooks.old')
+    .option('--uninstall', 'Remove existing hooks in this repository and rename hooks.old back to hooks')
+    .parse(process.argv);
+
+cli(program);

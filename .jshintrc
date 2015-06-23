@@ -1,0 +1,24 @@
+{
+    "curly": true,
+    "eqeqeq": true,
+    "freeze": true,
+    "immed": true,
+    "maxlen": 120,
+    "newcap": true,
+    "noarg": true,
+    "noempty": true,
+    "nonbsp": true,
+    "nonew": true,
+    "quotmark": "single",
+    "trailing": true,
+    "undef": true,
+    "unused": true,
+    "node": true,
+
+    "overrides": {
+        "**.test.js": {
+            "mocha": true,
+            "expr": true
+        }
+    }
+}
