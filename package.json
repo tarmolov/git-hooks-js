@@ -23,39 +23,5 @@
     "jscs": "^1.13.1",
     "jshint": "^2.8.0",
     "mocha": "^2.2.5"
-  },
-  "gitHooks": {
-    "dirs": {
-      "root": ".git",
-      "hooks": "hooks",
-      "hooksOld": "hooks.old"
-    },
-    "hooks": [
-      "applypatch-msg",
-      "commit-msg",
-      "post-applypatch",
-      "post-checkout",
-      "post-commit",
-      "post-merge",
-      "post-receive",
-      "pre-applypatch",
-      "pre-auto-gc",
-      "pre-commit",
-      "pre-push",
-      "pre-rebase",
-      "pre-receive",
-      "prepare-commit-msg",
-      "update"
-    ],
-    "template": [
-      "#!/usr/bin/env node",
-      "try {",
-      "   require('git-hooks').run(__filename, process.argv[2]).fail(function () {",
-      "       process.exit(-1);",
-      "   });",
-      "} catch (e) {",
-      "   console.log('Cannot find git-hooks. Did you install it?');",
-      "}"
-    ]
   }
 }

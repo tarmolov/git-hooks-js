@@ -3,11 +3,11 @@ var vow = require('vow');
 var vowFs = require('vow-fs');
 var gitHooks = require('../lib/git-hooks');
 
-var config = require('../package.json').gitHooks;
 var SANDBOX_PATH = __dirname + '/tmp-sandbox/';
 var GIT_ROOT = SANDBOX_PATH + '.git/';
-var PRECOMMIT_HOOK_PATH = GIT_ROOT + config.dirs.hooks + '/pre-commit';
-var GITHOOKS_PATH = SANDBOX_PATH + '.githooks/pre-commit/';
+var GIT_HOOKS = GIT_ROOT + 'hooks';
+var PRECOMMIT_HOOK_PATH = GIT_HOOKS + '/pre-commit';
+var PROJECT_PRECOMMIT_HOOK = SANDBOX_PATH + '.githooks/pre-commit/';
 
 function createHook(path, content) {
     return vowFs.write(path, '#!/bin/bash\n' + content).then(function () {
@@ -32,7 +32,7 @@ describe('git-hook runner', function () {
 
     describe('when a hooks are found', function () {
         beforeEach(function () {
-            return vowFs.makeDir(GITHOOKS_PATH);
+            return vowFs.makeDir(PROJECT_PRECOMMIT_HOOK);
         });
 
         describe('more than one', function () {
@@ -40,7 +40,7 @@ describe('git-hook runner', function () {
             beforeEach(function () {
                 return vow.all(hooks.map(function (name) {
                     var logFile = SANDBOX_PATH + name + '.log';
-                    return createHook(GITHOOKS_PATH + name, 'echo ' + name + '> ' + logFile);
+                    return createHook(PROJECT_PRECOMMIT_HOOK + name, 'echo ' + name + '> ' + logFile);
                 }));
             });
 
@@ -59,7 +59,7 @@ describe('git-hook runner', function () {
         describe('and works without errors', function () {
             var logFile = SANDBOX_PATH + 'hello.log';
             beforeEach(function () {
-                return createHook(GITHOOKS_PATH + 'hello', 'echo Hello, world! > ' + logFile);
+                return createHook(PROJECT_PRECOMMIT_HOOK + 'hello', 'echo Hello, world! > ' + logFile);
             });
 
             it('should run a hook and resolve a promise', function () {
@@ -73,7 +73,7 @@ describe('git-hook runner', function () {
 
         describe('and the hook finished with an error', function () {
             beforeEach(function () {
-                return createHook(GITHOOKS_PATH + 'hello', 'exit -1');
+                return createHook(PROJECT_PRECOMMIT_HOOK + 'hello', 'exit -1');
             });
 
             it('should run a hook and reject promise with an error', function (done) {
