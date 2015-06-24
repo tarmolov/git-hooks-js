@@ -12,6 +12,5 @@ It's inspired by [git-hooks](https://github.com/icefox/git-hooks) but has severa
 Run in the root of your project.
 ```
 npm install git-hooks --save-dev
-mkdir .githooks
 ```
-See example of a hook in [.githooks](https://github.com/tarmolov/git-hooks-js/tree/master/.githooks) directory.
+Then create any hook in `.githooks` directory. See example of a hook in [.githooks](https://github.com/tarmolov/git-hooks-js/tree/master/.githooks) directory.

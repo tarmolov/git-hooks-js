@@ -14,9 +14,9 @@ tests           Tests
 ```
 
 ## How to develop
-### Create your own copy of bla
+### Create your own copy of git-hooks-js
 ```
-git clone https://github.com/tarmolov/git-hooks.git
+git clone https://github.com/tarmolov/git-hooks-js.git
 npm install
 ```
 **Note.** It's better to create a fork, if you plan to make a pull request.
