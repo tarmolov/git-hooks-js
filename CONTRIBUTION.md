@@ -11,6 +11,7 @@
 bin             Executable file
 lib             Library code
 tests           Tests
+```
 
 ## How to develop
 ### Create your own copy of bla
