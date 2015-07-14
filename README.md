@@ -11,10 +11,9 @@ They are very powerful and helpful.
 
 You can do a lot of things with them:
 
-  * Validate code and run tests before commit.
-  * Check codestyle.
+  * [Validate code](http://jshint.com/) and run tests before commit.
+  * [Check codestyle](http://jscs.info/).
   * Spell check the commit message or check it format.
-  * Check the commit message.
   * and etc.
 
 **Note.** When you use `git-hooks`, you should not modify `$GIT_DIR/hooks` directory manually because `git-hooks` will do it for you.
