@@ -37,6 +37,8 @@ chmod +x hello.js
 
 Then just try to commit and see how things are rolling.
 
+See also [hooks examples](examples).
+
 ## Related projects
   * Original [git-hooks](https://github.com/icefox/git-hooks) project
   * [pre-commit](https://github.com/observing/pre-commit)
