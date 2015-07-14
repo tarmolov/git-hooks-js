@@ -13,6 +13,10 @@
     "test": "jscs . && jshint . && mocha --reporter spec --recursive tests"
   },
   "main": "lib/git-hooks",
+  "files": [
+    "bin",
+    "lib"
+  ],
   "dependencies": {
     "commander": "^2.8.1",
     "vow": "~0.4.10",

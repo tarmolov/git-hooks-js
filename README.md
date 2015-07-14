@@ -1,16 +1,42 @@
 # git-hooks-js [![NPM version](https://badge.fury.io/js/git-hooks.svg)](http://badge.fury.io/js/git-hooks) [![Build Status](https://travis-ci.org/tarmolov/git-hooks-js.svg)](https://travis-ci.org/tarmolov/git-hooks-js)
 
-It's inspired by [git-hooks](https://github.com/icefox/git-hooks) but has several differences:
+`git-hooks` is an utility for managing and running project [git hooks](http://git-scm.com/docs/githooks).
 
-  * Created for nodejs projects and written in nodejs not bash.
-  * Installs and removes hooks automatically during the package installation/uninstallation.
-  * Finds hooks only in `.githooks` directory in the project.
-  * Should be installed as a local package and of course it would work only for git repositories.
-  * Well-tested and ready for use :)
+Just [install git-hooks](#install) and it will run your hooks when a hook is called by git.
 
-## Installation
-Run in the root of your project.
-```
+## Why do you need git hooks in your project?
+Hooks are little scripts you can place in `$GIT_DIR/hooks` directory to trigger action at certain points.
+
+They are very powerful and helpful.
+
+You can do a lot of things with them:
+
+  * Validate code and run tests before commit.
+  * Check codestyle.
+  * Spell check the commit message or check it format.
+  * Check the commit message.
+  * and etc.
+
+**Note.** When you use `git-hooks`, you should not modify `$GIT_DIR/hooks` directory manually because `git-hooks` will do it for you.
+
+## Install
+Install `git-hooks` in your project.
+```bash
 npm install git-hooks --save-dev
 ```
-Then create any hook in `.githooks` directory. See example of a hook in [.githooks](https://github.com/tarmolov/git-hooks-js/tree/master/.githooks) directory.
+
+To keep things organized, `git-hooks` looks for scripts in sub-directories named after the git hook name.
+All these sub-directories should be stored in `.githooks` directory in the project root.
+
+Let's create some dummy pre-commit hook.
+```bash
+mkdir -p .githooks/pre-commit
+echo -e '#!/usr/bin/env node' "\nconsole.log('hello, world');" > hello.js
+chmod +x hello.js
+```
+
+Then just try to commit and see how things are rolling.
+
+## Related projects
+  * Original [git-hooks](https://github.com/icefox/git-hooks) project
+  * [pre-commit](https://github.com/observing/pre-commit)
