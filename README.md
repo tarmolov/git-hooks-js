@@ -30,11 +30,15 @@ All these sub-directories should be stored in `.githooks` directory in the proje
 Let's create some dummy pre-commit hook.
 ```bash
 mkdir -p .githooks/pre-commit
-echo -e '#!/usr/bin/env node' "\nconsole.log('hello, world');" > hello.js
-chmod +x hello.js
+echo -e '#!/usr/bin/env node' "\nconsole.log('hello, world');" > .githooks/pre-commit/hello.js
+chmod +x .githooks/pre-commit/hello.js
 ```
 
 Then just try to commit and see how things are rolling.
+```bash
+git add .githooks package.json
+git commit -m "Add git-hooks"
+```
 
 See also [hooks examples](examples).
 
