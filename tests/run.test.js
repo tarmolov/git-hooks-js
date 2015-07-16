@@ -24,8 +24,11 @@ describe('git-hook runner', function () {
         fsHelpers.removeDir(SANDBOX_PATH);
     });
 
-    it('should works without hooks', function () {
-        gitHooks.run(PRECOMMIT_HOOK_PATH);
+    it('should works without hooks', function (done) {
+        gitHooks.run(PRECOMMIT_HOOK_PATH, null, function (code) {
+            code.should.equal(0);
+            done();
+        });
     });
 
     describe('when a hooks are found', function () {
@@ -42,12 +45,14 @@ describe('git-hook runner', function () {
                 });
             });
 
-            it('should run it one by one', function () {
-                gitHooks.run(PRECOMMIT_HOOK_PATH);
-
-                hooks.forEach(function (name) {
-                    var logFile = SANDBOX_PATH + name + '.log';
-                    fs.readFileSync(logFile).toString().should.equal(name + '\n');
+            it('should run it one by one', function (done) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, null, function (code) {
+                    code.should.equal(0);
+                    hooks.forEach(function (name) {
+                        var logFile = SANDBOX_PATH + name + '.log';
+                        fs.readFileSync(logFile).toString().should.equal(name + '\n');
+                    });
+                    done();
                 });
             });
         });
@@ -58,9 +63,12 @@ describe('git-hook runner', function () {
                 createHook(PROJECT_PRECOMMIT_HOOK + 'hello', 'echo Hello, world! > ' + logFile);
             });
 
-            it('should run a hook with success status', function () {
-                gitHooks.run(PRECOMMIT_HOOK_PATH);
-                fs.readFileSync(logFile).toString().should.equal('Hello, world!\n');
+            it('should run a hook with success status', function (done) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, null, function (code) {
+                    code.should.equal(0);
+                    fs.readFileSync(logFile).toString().should.equal('Hello, world!\n');
+                    done();
+                });
             });
         });
 
@@ -69,9 +77,11 @@ describe('git-hook runner', function () {
                 createHook(PROJECT_PRECOMMIT_HOOK + 'hello', 'exit -1');
             });
 
-            it('should run a hook and return error', function () {
-                var code = gitHooks.run(PRECOMMIT_HOOK_PATH);
-                code.should.equal(255);
+            it('should run a hook and return error', function (done) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, null, function (code) {
+                    code.should.equal(255);
+                    done();
+                });
             });
         });
     });
