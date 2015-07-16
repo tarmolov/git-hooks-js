@@ -1,8 +1,7 @@
 require('chai').should();
 var fs = require('fs');
 var gitHooks = require('../lib/git-hooks');
-var helpers = require('../lib/helpers');
-var consts = helpers.consts;
+var fsHelpers = require('../lib/fs-helpers');
 
 var SANDBOX_PATH = __dirname + '/tmp-sandbox/';
 var GIT_ROOT = SANDBOX_PATH + '.git/';
@@ -17,21 +16,21 @@ function createHook(path, content) {
 
 describe('git-hook runner', function () {
     beforeEach(function () {
-        helpers.makeDir(GIT_ROOT);
+        fsHelpers.makeDir(GIT_ROOT);
         gitHooks.install(SANDBOX_PATH);
     });
 
     afterEach(function () {
-        helpers.removeDir(SANDBOX_PATH);
+        fsHelpers.removeDir(SANDBOX_PATH);
     });
 
     it('should works without hooks', function () {
-        gitHooks.run(PRECOMMIT_HOOK_PATH).should.be.eq(consts.STATUS.ERROR);
+        gitHooks.run(PRECOMMIT_HOOK_PATH);
     });
 
     describe('when a hooks are found', function () {
         beforeEach(function () {
-            helpers.makeDir(PROJECT_PRECOMMIT_HOOK);
+            fsHelpers.makeDir(PROJECT_PRECOMMIT_HOOK);
         });
 
         describe('more than one', function () {
@@ -44,7 +43,7 @@ describe('git-hook runner', function () {
             });
 
             it('should run it one by one', function () {
-                gitHooks.run(PRECOMMIT_HOOK_PATH).should.be.eq(consts.STATUS.SUCCESS);
+                gitHooks.run(PRECOMMIT_HOOK_PATH);
 
                 hooks.forEach(function (name) {
                     var logFile = SANDBOX_PATH + name + '.log';
@@ -60,7 +59,7 @@ describe('git-hook runner', function () {
             });
 
             it('should run a hook with success status', function () {
-                gitHooks.run(PRECOMMIT_HOOK_PATH).should.be.eq(consts.STATUS.SUCCESS);
+                gitHooks.run(PRECOMMIT_HOOK_PATH);
                 fs.readFileSync(logFile).toString().should.equal('Hello, world!\n');
             });
         });
@@ -71,7 +70,8 @@ describe('git-hook runner', function () {
             });
 
             it('should run a hook and return error', function () {
-                gitHooks.run(PRECOMMIT_HOOK_PATH).should.be.eq(consts.STATUS.ERROR);
+                var code = gitHooks.run(PRECOMMIT_HOOK_PATH);
+                code.should.equal(255);
             });
         });
     });
