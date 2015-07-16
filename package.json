@@ -19,14 +19,14 @@
     "lib"
   ],
   "dependencies": {
-    "commander": "^2.8.1",
-    "vow": "~0.4.10",
-    "vow-fs": "~0.3.4"
+    "commander": "~2.8.1",
+    "vow": "~0.4.10"
   },
   "devDependencies": {
     "chai": "^2.3.0",
     "jscs": "^1.13.1",
     "jshint": "^2.8.0",
+    "mkdirp": "^0.5.1",
     "mocha": "^2.2.5"
   }
 }

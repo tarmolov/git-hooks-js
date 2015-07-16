@@ -1,5 +1,6 @@
 require('chai').should();
-var vowFs = require('vow-fs');
+var mkdirp = require('mkdirp');
+var fsHelpers = require('../lib/fs-helpers');
 var gitHooks = require('../lib/git-hooks');
 
 var SANDBOX_PATH = __dirname + '/tmp-sandbox/';
@@ -9,44 +10,38 @@ var GIT_HOOKS_OLD = GIT_ROOT + 'hooks.old';
 
 describe('--install', function () {
     beforeEach(function () {
-        return vowFs.makeDir(GIT_ROOT);
+        mkdirp.sync(GIT_ROOT);
     });
 
     afterEach(function () {
-        return vowFs.removeDir(SANDBOX_PATH);
+        fsHelpers.removeDir(SANDBOX_PATH);
     });
 
     it('should install hooks', function () {
-        return gitHooks.install(SANDBOX_PATH).then(function () {
-            return vowFs.exists(GIT_HOOKS).then(function (isExists) {
-                isExists.should.be.true;
-            });
-        });
+        gitHooks.install(SANDBOX_PATH);
+        fsHelpers.exists(GIT_HOOKS).should.be.true;
     });
 
     describe('when some hooks already exist', function () {
         beforeEach(function () {
-            return vowFs.makeDir(GIT_HOOKS);
+            mkdirp.sync(GIT_ROOT);
         });
 
         it('should backup hooks before installation', function () {
-            return gitHooks.install(SANDBOX_PATH).then(function () {
-                return vowFs.exists(GIT_HOOKS_OLD).then(function (isExists) {
-                    isExists.should.be.true;
-                });
-            });
+            gitHooks.install(SANDBOX_PATH);
+            fsHelpers.exists(GIT_HOOKS_OLD).should.be.true;
         });
     });
 
     describe('when git-hooks is already installed', function () {
         beforeEach(function () {
-            return vowFs.makeDir(GIT_HOOKS_OLD);
+            mkdirp.sync(GIT_HOOKS_OLD);
         });
 
-        it('should show error', function (done) {
-            gitHooks.install(SANDBOX_PATH).fail(function () {
-                done();
-            });
+        it('should show error', function () {
+            (function () {
+                gitHooks.install(SANDBOX_PATH);
+            }).should.throw(Error);
         });
     });
 });
