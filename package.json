@@ -19,9 +19,7 @@
     "lib"
   ],
   "dependencies": {
-    "commander": "^2.8.1",
-    "vow": "~0.4.10",
-    "vow-fs": "~0.3.4"
+    "commander": "^2.8.1"
   },
   "devDependencies": {
     "chai": "^2.3.0",
