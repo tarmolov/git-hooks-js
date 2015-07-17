@@ -6,7 +6,7 @@
   "repository": "https://github.com/tarmolov/git-hooks-js",
   "contributors": [
     "Alexander Tarmolov <tarmolov@gmail.com> (http://tarmolov.ru/)",
-    "Denis Khananein (http://zloy.me/)",
+    "Denis Khananein <i@zloylos.me> (http://zloy.me/)",
     "Ikonnikov Konstantin"
   ],
   "bin": {
