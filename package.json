@@ -4,6 +4,11 @@
   "author": "Alexander Tarmolov <tarmolov@gmail.com>",
   "version": "1.0.0-rc.2",
   "repository": "https://github.com/tarmolov/git-hooks-js",
+  "contributors": [
+    "Alexander Tarmolov <tarmolov@gmail.com> (http://tarmolov.ru/)",
+    "Denis Khananein (http://zloy.me/)",
+    "Ikonnikov Konstantin"
+  ],
   "bin": {
     "git-hooks": "./bin/git-hooks"
   },
@@ -23,5 +28,6 @@
     "jscs": "^1.13.1",
     "jshint": "^2.8.0",
     "mocha": "^2.2.5"
-  }
+  },
+  "licence": "MIT"
 }
