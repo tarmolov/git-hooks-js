@@ -2,7 +2,7 @@
   "name": "git-hooks",
   "description": "A tool to manage project Git hooks",
   "author": "Alexander Tarmolov <tarmolov@gmail.com>",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0-rc.4",
   "repository": "https://github.com/tarmolov/git-hooks-js",
   "contributors": [
     "Alexander Tarmolov <tarmolov@gmail.com> (http://tarmolov.ru/)",
@@ -12,6 +12,10 @@
   "bin": {
     "git-hooks": "./bin/git-hooks"
   },
+  "engines": {
+    "node": ">=0.10.x"
+  },
+  "engineStrict": true,
   "scripts": {
     "postinstall": "git-hooks --install",
     "preuninstall": "git-hooks --uninstall",
