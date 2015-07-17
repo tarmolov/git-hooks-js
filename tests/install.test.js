@@ -21,6 +21,19 @@ describe('--install', function () {
         fsHelpers.exists(GIT_HOOKS).should.be.true;
     });
 
+    describe('when it is run not inside a git repo', function () {
+        beforeEach(function () {
+            fsHelpers.removeDir(GIT_ROOT);
+        });
+
+        it('should throw an error', function () {
+            var fn = function () {
+                gitHooks.install(SANDBOX_PATH);
+            };
+            fn.should.throw(Error);
+        });
+    });
+
     describe('when some hooks already exist', function () {
         beforeEach(function () {
             fsHelpers.makeDir(GIT_HOOKS);

@@ -25,6 +25,19 @@ describe('--uninstall', function () {
         });
     });
 
+    describe('when it is run not inside a git repo', function () {
+        beforeEach(function () {
+            fsHelpers.removeDir(GIT_ROOT);
+        });
+
+        it('should throw an error', function () {
+            var fn = function () {
+                gitHooks.install(SANDBOX_PATH);
+            };
+            fn.should.throw(Error);
+        });
+    });
+
     describe('when git-hooks is installed', function () {
         beforeEach(function () {
             fsHelpers.makeDir(GIT_HOOKS);
