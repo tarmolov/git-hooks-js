@@ -45,3 +45,5 @@ See also [hooks examples](examples).
 ## Related projects
   * Original [git-hooks](https://github.com/icefox/git-hooks) project
   * [pre-commit](https://github.com/observing/pre-commit)
+  * [ghooks](https://github.com/gtramontina/ghooks)
+  * [husky](https://github.com/typicode/husky)
