@@ -1,6 +1,8 @@
 # git-hooks-js [![NPM version](https://badge.fury.io/js/git-hooks.svg)](http://badge.fury.io/js/git-hooks) [![Build Status](https://travis-ci.org/tarmolov/git-hooks-js.svg)](https://travis-ci.org/tarmolov/git-hooks-js) [![Coverage Status](https://coveralls.io/repos/tarmolov/git-hooks-js/badge.svg?branch=master&service=github)](https://coveralls.io/github/tarmolov/git-hooks-js?branch=master)
 
-`git-hooks` is an utility for managing and running project [git hooks](http://git-scm.com/docs/githooks).
+`git-hooks` is an utility for managing and running project [git hooks](http://git-scm.com/docs/githooks) for [nodejs](http://nodejs.org/) projects.
+
+It has zero dependecies and easy to use.
 
 Just [install git-hooks](#install) and it will run your hooks when a hook is called by git.
 
@@ -30,7 +32,7 @@ All these sub-directories should be stored in `.githooks` directory in the proje
 Let's create some dummy pre-commit hook.
 ```bash
 mkdir -p .githooks/pre-commit
-echo -e '#!/usr/bin/env node' "\nconsole.log('hello, world');" > .githooks/pre-commit/hello.js
+echo -e '#!/usr/bin/env node' "\nconsole.log('hi!');" > .githooks/pre-commit/hello.js
 chmod +x .githooks/pre-commit/hello.js
 ```
 
