@@ -1,3 +1,4 @@
 /node_modules/*
 !/node_modules/git-hooks
+/coverage
 npm-debug.log

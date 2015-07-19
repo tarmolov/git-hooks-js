@@ -15,11 +15,12 @@
   "engines": {
     "node": ">=0.10.x"
   },
-  "engineStrict": true,
+  "engine-trict": true,
   "scripts": {
     "postinstall": "git-hooks --install",
     "preuninstall": "git-hooks --uninstall",
-    "test": "jscs . && jshint . && mocha --reporter spec --recursive tests"
+    "test": "jscs . && jshint . && mocha --reporter spec --recursive tests",
+    "coverage": "istanbul cover _mocha --recursive tests"
   },
   "main": "lib/git-hooks",
   "files": [
@@ -29,9 +30,10 @@
   ],
   "devDependencies": {
     "chai": "^2.3.0",
+    "istanbul": "^0.3.17",
     "jscs": "^1.13.1",
     "jshint": "^2.8.0",
     "mocha": "^2.2.5"
   },
-  "licence": "MIT"
+  "license" : "MIT"
 }

@@ -3,6 +3,7 @@
 
     "excludeFiles": [
         "node_modules/**",
+        "coverage/**",
         ".git/**"
     ]
 }
