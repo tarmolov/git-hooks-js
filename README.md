@@ -1,4 +1,4 @@
-# git-hooks-js [![NPM version](https://badge.fury.io/js/git-hooks.svg)](http://badge.fury.io/js/git-hooks) [![Build Status](https://travis-ci.org/tarmolov/git-hooks-js.svg)](https://travis-ci.org/tarmolov/git-hooks-js) [![Coverage Status](https://coveralls.io/repos/tarmolov/git-hooks-js/badge.svg?branch=master&service=github)](https://coveralls.io/github/tarmolov/git-hooks-js?branch=master)
+# git-hooks-js [![NPM version](https://badge.fury.io/js/git-hooks.svg)](http://badge.fury.io/js/git-hooks) [![Build Status](https://travis-ci.org/tarmolov/git-hooks-js.svg)](https://travis-ci.org/tarmolov/git-hooks-js) [![Coverage Status](https://coveralls.io/repos/tarmolov/git-hooks-js/badge.svg?branch=master&service=github)](https://coveralls.io/github/tarmolov/git-hooks-js?branch=master) [![Dependency Status](https://david-dm.org/tarmolov/git-hooks-js.svg)](https://david-dm.org/tarmolov/git-hooks-js)
 
 `git-hooks` is an utility for managing and running project [git hooks](http://git-scm.com/docs/githooks) for [nodejs](http://nodejs.org/) projects.
 
