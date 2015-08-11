@@ -37,7 +37,7 @@
   "engines": {
     "node": ">=0.8.x"
   },
-  "engine-trict": true,
+  "engine-strict": true,
   "scripts": {
     "postinstall": "git-hooks --install",
     "preuninstall": "git-hooks --uninstall",
