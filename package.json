@@ -35,8 +35,5 @@
     "jshint": "^2.8.0",
     "mocha": "^2.2.5"
   },
-  "license" : {
-    "type": "MIT",
-    "url": "https://github.com/tarmolov/git-hooks-js/LICENSE.md"
-  }
+  "license" : "MIT"
 }
