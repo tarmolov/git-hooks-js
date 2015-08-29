@@ -9,6 +9,28 @@
     "Denis Khananein <i@zloylos.me> (http://zloy.me/)",
     "Ikonnikov Konstantin"
   ],
+  "keywords": [
+    "git",
+    "hooks",
+    "hook",
+    "lint",
+    "test",
+    "development",
+    "applypatch-msg",
+    "commit-msg",
+    "post-applypatch",
+    "post-checkout",
+    "post-commit",
+    "post-merge",
+    "post-receive",
+    "pre-applypatch",
+    "pre-auto-gc",
+    "pre-commit",
+    "pre-push",
+    "pre-rebase",
+    "pre-receive",
+    "prepare-commit-msg"
+  ],
   "bin": {
     "git-hooks": "./bin/git-hooks"
   },
