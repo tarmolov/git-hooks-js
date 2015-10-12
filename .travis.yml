@@ -4,6 +4,7 @@ node_js:
 - "0.11"
 - "0.12"
 - "iojs"
+sudo: false
 after_success:
 - "npm run coverage"
 - "npm install coveralls@2.11 && cat ./coverage/lcov.info | coveralls"
