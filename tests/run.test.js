@@ -31,9 +31,23 @@ describe('git-hook runner', function () {
         });
     });
 
-    describe('when a hooks are found', function () {
+    describe('when hooks are found', function () {
         beforeEach(function () {
             fsHelpers.makeDir(PROJECT_PRECOMMIT_HOOK);
+        });
+
+        describe('and a hook is unexecutable', function () {
+            beforeEach(function () {
+                var logFile = SANDBOX_PATH + 'hello.log';
+                fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + 'hello', '#!/bin/bash\n' + 'echo hello > ' + logFile);
+            });
+
+            it('should return an error', function () {
+                var fn = function () {
+                    gitHooks.run(PRECOMMIT_HOOK_PATH);
+                };
+                fn.should.throw(Error);
+            });
         });
 
         describe('more than one', function () {
