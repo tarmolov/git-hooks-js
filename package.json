@@ -2,7 +2,7 @@
   "name": "git-hooks",
   "description": "A tool to manage project Git hooks",
   "author": "Alexander Tarmolov <tarmolov@gmail.com>",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": "https://github.com/tarmolov/git-hooks-js",
   "contributors": [
     "Alexander Tarmolov <tarmolov@gmail.com> (http://tarmolov.ru/)",
