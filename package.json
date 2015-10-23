@@ -35,7 +35,7 @@
     "git-hooks": "./bin/git-hooks"
   },
   "engines": {
-    "node": ">=0.10.x"
+    "node": ">=0.8.x"
   },
   "engine-trict": true,
   "scripts": {
@@ -51,11 +51,11 @@
     "lib"
   ],
   "devDependencies": {
-    "chai": "^2.3.0",
-    "istanbul": "^0.3.17",
-    "jscs": "^1.13.1",
-    "jshint": "^2.8.0",
-    "mocha": "^2.2.5"
+    "chai": "2.3.0",
+    "istanbul": "0.3.17",
+    "jscs": "1.13.1",
+    "jshint": "2.8.0",
+    "mocha": "2.2.5"
   },
   "license" : "MIT"
 }
