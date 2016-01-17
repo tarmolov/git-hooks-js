@@ -55,7 +55,9 @@
     "istanbul": "0.3.17",
     "jscs": "1.13.1",
     "jshint": "2.8.0",
-    "mocha": "2.2.5"
+    "mocha": "2.2.5",
+    "shebang-command": "1.0.0",
+    "shebang-regex": "2.0.0"
   },
   "license" : "MIT"
 }
