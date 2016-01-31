@@ -2,6 +2,7 @@ require('chai').should();
 var fs = require('fs');
 var gitHooks = require('../lib/git-hooks');
 var fsHelpers = require('../lib/fs-helpers');
+var isWin32 = process.platform === 'win32';
 
 var SANDBOX_PATH = __dirname + '/tmp-sandbox/';
 var GIT_ROOT = SANDBOX_PATH + '.git/';
@@ -39,7 +40,8 @@ describe('git-hook runner', function () {
         describe('and a hook is unexecutable', function () {
             beforeEach(function () {
                 var logFile = SANDBOX_PATH + 'hello.log';
-                fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + 'hello', '#!/bin/bash\n' + 'echo hello > ' + logFile);
+                var hook = (isWin32 ? '' : '#!/bin/bash\n') + 'echo hello > ' + logFile;
+                fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + 'hello', hook);
             });
 
             it('should return an error', function () {
@@ -55,6 +57,9 @@ describe('git-hook runner', function () {
             beforeEach(function () {
                 hooks.forEach(function (name) {
                     var logFile = SANDBOX_PATH + name + '.log';
+                    if (isWin32) {
+                        logFile = logFile.replace(/\\/g, '\\\\');
+                    }
                     createHook(PROJECT_PRECOMMIT_HOOK + name, 'echo ' + name + '> ' + logFile);
                 });
             });
@@ -73,6 +78,9 @@ describe('git-hook runner', function () {
 
         describe('and works without errors', function () {
             var logFile = SANDBOX_PATH + 'hello.log';
+            if (isWin32) {
+                logFile = logFile.replace(/\\/g, '\\\\');
+            }
             beforeEach(function () {
                 createHook(PROJECT_PRECOMMIT_HOOK + 'hello', 'echo Hello, world! > ' + logFile);
             });

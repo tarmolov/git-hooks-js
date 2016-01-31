@@ -50,6 +50,10 @@
     "examples",
     "lib"
   ],
+  "dependencies": {
+    "shebang-command": "1.0.0",
+    "shebang-regex": "2.0.0"
+  },
   "devDependencies": {
     "chai": "2.3.0",
     "istanbul": "0.3.17",
