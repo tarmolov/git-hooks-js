@@ -8,6 +8,7 @@ var GIT_ROOT = SANDBOX_PATH + '.git/';
 var GIT_HOOKS = GIT_ROOT + 'hooks';
 var PRECOMMIT_HOOK_PATH = GIT_HOOKS + '/pre-commit';
 var PROJECT_PRECOMMIT_HOOK = SANDBOX_PATH + '.githooks/pre-commit/';
+var GIT_IGNORE = SANDBOX_PATH + '.gitignore';
 
 function createHook(path, content) {
     fs.writeFileSync(path, '#!/bin/bash\n' + content);
@@ -42,11 +43,12 @@ describe('git-hook runner', function () {
                 fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + 'hello', '#!/bin/bash\n' + 'echo hello > ' + logFile);
             });
 
-            it('should return an error', function () {
-                var fn = function () {
-                    gitHooks.run(PRECOMMIT_HOOK_PATH);
-                };
-                fn.should.throw(Error);
+            it('should return an error', function (done) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, null, function (code, error) {
+                    code.should.equal(1);
+                    error.should.be.ok;
+                    done();
+                });
             });
         });
 
@@ -94,6 +96,24 @@ describe('git-hook runner', function () {
             it('should run a hook and return error', function (done) {
                 gitHooks.run(PRECOMMIT_HOOK_PATH, null, function (code) {
                     code.should.equal(255);
+                    done();
+                });
+            });
+        });
+
+        describe('do not run git-ignored scripts from hooks directory', function () {
+            var ignoreFilename = 'ignore-me';
+            var ignoreContent = ignoreFilename + '\n*.swp';
+
+            beforeEach(function () {
+                fs.writeFileSync(GIT_IGNORE, ignoreContent);
+                fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + ignoreFilename, 'exit -1');
+                fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + 'test.swp', 'exit -1');
+            });
+
+            it('should ignore file with wrong permissions in hooks directory', function (done) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, null, function (code) {
+                    code.should.equal(0);
                     done();
                 });
             });
