@@ -46,6 +46,8 @@ git commit -m "Add git-hooks"
 
 See also [hooks examples](examples).
 
+It's worth to mention that our library checks for gitignore rules while executing scripts in .githooks/ directories.
+
 ## Related projects
   * Original [git-hooks](https://github.com/icefox/git-hooks) project
   * [pre-commit](https://github.com/observing/pre-commit)
