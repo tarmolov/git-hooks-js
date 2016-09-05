@@ -26,7 +26,7 @@ describe('git-hook runner', function () {
     });
 
     it('should works without hooks', function (done) {
-        gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
+        gitHooks.run(PRECOMMIT_HOOK_PATH, [], '', function (code) {
             code.should.equal(0);
             done();
         });
@@ -44,7 +44,7 @@ describe('git-hook runner', function () {
             });
 
             it('should return an error', function (done) {
-                gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code, error) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, [], '', function (code, error) {
                     code.should.equal(1);
                     error.should.be.ok;
                     done();
@@ -62,7 +62,7 @@ describe('git-hook runner', function () {
             });
 
             it('should run it one by one', function (done) {
-                gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, [], '', function (code) {
                     code.should.equal(0);
                     hooks.forEach(function (name) {
                         var logFile = SANDBOX_PATH + name + '.log';
@@ -76,20 +76,30 @@ describe('git-hook runner', function () {
         describe('and work without errors', function () {
             var logFile = SANDBOX_PATH + 'hello.log';
             beforeEach(function () {
-                createHook(PROJECT_PRECOMMIT_HOOK + 'hello', 'echo "Hello, world! ${@:1}" > ' + logFile);
+                createHook(
+                    PROJECT_PRECOMMIT_HOOK + 'hello',
+                    'input=`cat`; echo -e "Hello, world!\n${@:1}\n$input" > ' + logFile
+                );
             });
 
             it('should pass all arguments to them', function (done) {
-                gitHooks.run(PRECOMMIT_HOOK_PATH, ['I', 'am', 'working', 'properly!'], function () {
-                    fs.readFileSync(logFile).toString().should.equal('Hello, world! I am working properly!\n');
+                gitHooks.run(PRECOMMIT_HOOK_PATH, ['I', 'am', 'working', 'properly!'], '', function () {
+                    fs.readFileSync(logFile).toString().should.equal('Hello, world!\nI am working properly!\n\n');
+                    done();
+                });
+            });
+
+            it('should pass standard input to them', function (done) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, [], 'I am working properly!', function () {
+                    fs.readFileSync(logFile).toString().should.equal('Hello, world!\n\nI am working properly!\n');
                     done();
                 });
             });
 
             it('should run a hook with success status', function (done) {
-                gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, [], '', function (code) {
                     code.should.equal(0);
-                    fs.readFileSync(logFile).toString().should.equal('Hello, world! \n');
+                    fs.readFileSync(logFile).toString().should.equal('Hello, world!\n\n\n');
                     done();
                 });
             });
@@ -101,7 +111,7 @@ describe('git-hook runner', function () {
             });
 
             it('should run a hook and return error', function (done) {
-                gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, [], '', function (code) {
                     code.should.equal(255);
                     done();
                 });
@@ -119,7 +129,7 @@ describe('git-hook runner', function () {
             });
 
             it('should ignore file with wrong permissions in hooks directory', function (done) {
-                gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, [], '', function (code) {
                     code.should.equal(0);
                     done();
                 });
