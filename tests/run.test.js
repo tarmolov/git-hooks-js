@@ -1,6 +1,6 @@
 require('chai').should();
 var fs = require('fs');
-var execSync = require('child_process').execSync;
+var exec = require('child_process').exec;
 var gitHooks = require('../lib/git-hooks');
 var fsHelpers = require('../lib/fs-helpers');
 
@@ -92,9 +92,11 @@ describe('git-hook runner', function () {
 
             describe('if standard input is passed in', function () {
                 it('should read it properly', function (done) {
-                    execSync('echo "I am working properly!" | ' + PRECOMMIT_HOOK_PATH);
-                    fs.readFileSync(logFile).toString().trim().should.equal('Hello, world!\n\nI am working properly!');
-                    done();
+                    exec('echo "I am working properly!" | ' + PRECOMMIT_HOOK_PATH, function () {
+                        fs.readFileSync(logFile).toString().trim()
+                            .should.equal('Hello, world!\n\nI am working properly!');
+                        done();
+                    });
                 });
 
                 it('should pass it to them', function (done) {
