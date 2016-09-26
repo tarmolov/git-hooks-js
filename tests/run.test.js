@@ -84,7 +84,7 @@ describe('git-hook runner', function () {
 
             it('should pass all arguments to them', function (done) {
                 gitHooks.run(PRECOMMIT_HOOK_PATH, ['I', 'am', 'working', 'properly!'], '', function () {
-                    fs.readFileSync(logFile).toString().should.equal('Hello, world!\nI am working properly!\n\n');
+                    fs.readFileSync(logFile).toString().trim().should.equal('Hello, world!\nI am working properly!');
                     done();
                 });
             });
@@ -99,7 +99,7 @@ describe('git-hook runner', function () {
             it('should run a hook with success status', function (done) {
                 gitHooks.run(PRECOMMIT_HOOK_PATH, [], '', function (code) {
                     code.should.equal(0);
-                    fs.readFileSync(logFile).toString().should.equal('Hello, world!\n\n\n');
+                    fs.readFileSync(logFile).toString().trim().should.equal('Hello, world!');
                     done();
                 });
             });
