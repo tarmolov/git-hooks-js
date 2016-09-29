@@ -39,7 +39,8 @@
   },
   "engine-strict": true,
   "scripts": {
-    "postinstall": "git-hooks --uninstall; git-hooks --install",
+    "postinstall": "git-hooks --install",
+    "preuninstall": "git-hooks --uninstall",
     "test": "jscs . && jshint . && mocha --reporter spec --recursive tests",
     "coverage": "istanbul cover _mocha --recursive tests"
   },
