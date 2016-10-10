@@ -126,33 +126,22 @@ describe('git-hook runner', function () {
             });
         });
 
-        describe('do not run git-ignored scripts from hooks directory', function () {
+        describe('and the hooks are git-ignored', function () {
             var ignoreFilename = 'ignore-me';
             var ignoreContent = ignoreFilename + '\n*.swp';
 
             beforeEach(function () {
                 fs.writeFileSync(GIT_IGNORE, ignoreContent);
-                fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + ignoreFilename, 'exit -1');
-                fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + 'test.swp', 'exit -1');
+                createHook(PROJECT_PRECOMMIT_HOOK + ignoreFilename, 'exit -1');
+                createHook(PROJECT_PRECOMMIT_HOOK + 'test.swp', 'exit -1');
             });
-            if (process.platform !== 'win32') {
-                /* Skip this test on Windows for now, because it exposes
-                       a bug in the code (on both Windows and non-Windows)
-                       which has not yet been fixed.
 
-                   The test only passes on nix because the hooks have the wrong
-                       permissions. On Windows, where the concept of an executable
-                       bit does not exist, this test fails.
-                   So, disabling this test on Windows until the bug is fixed,
-                        which will be done in another branch/commit
-                 */
-                it('should ignore file with wrong permissions in hooks directory', function (done) {
-                    gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
-                        code.should.equal(0);
-                        done();
-                    });
+            it('should not run git-ignored scripts, regardless of permissions', function (done) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
+                    code.should.equal(0);
+                    done();
                 });
-            }
+            });
         });
     });
 });
