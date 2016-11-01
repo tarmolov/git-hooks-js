@@ -31,16 +31,13 @@
     "pre-receive",
     "prepare-commit-msg"
   ],
-  "bin": {
-    "git-hooks": "./bin/git-hooks"
-  },
   "engines": {
     "node": ">=0.8.x"
   },
   "engine-strict": true,
   "scripts": {
-    "postinstall": "git-hooks --install",
-    "preuninstall": "git-hooks --uninstall",
+    "postinstall": "./bin/git-hooks --install",
+    "preuninstall": "./bin/git-hooks --uninstall",
     "test": "jscs . && jshint . && mocha --reporter spec --recursive tests",
     "coverage": "istanbul cover _mocha --recursive tests"
   },
