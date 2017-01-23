@@ -40,16 +40,28 @@ describe('git-hook runner', function () {
         describe('and a hook is unexecutable', function () {
             beforeEach(function () {
                 var logFile = SANDBOX_PATH + 'hello.log';
+                if (process.platform === 'win32') {
+                    logFile = logFile.replace(/\\/g, '/'); // sh interprets backslashes as escape sequences
+                }
                 fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + 'hello', '#!/bin/bash\n' + 'echo hello > ' + logFile);
             });
 
-            it('should return an error', function (done) {
-                gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code, error) {
-                    code.should.equal(1);
-                    error.should.be.ok;
-                    done();
+            if (process.platform !== 'win32') {
+                it('should return an error', function (done) {
+                    gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code, error) {
+                        code.should.equal(1);
+                        error.should.be.ok;
+                        done();
+                    });
                 });
-            });
+            } else {
+                it('should run anyways on Windows', function (done) {
+                    gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
+                        code.should.equal(0);
+                        done();
+                    });
+                });
+            }
         });
 
         describe('more than one', function () {
@@ -57,6 +69,9 @@ describe('git-hook runner', function () {
             beforeEach(function () {
                 hooks.forEach(function (name) {
                     var logFile = SANDBOX_PATH + name + '.log';
+                    if (process.platform === 'win32') {
+                        logFile = logFile.replace(/\\/g, '/'); // sh interprets backslashes as escape sequences
+                    }
                     createHook(PROJECT_PRECOMMIT_HOOK + name, 'echo ' + name + '> ' + logFile);
                 });
             });
@@ -75,6 +90,9 @@ describe('git-hook runner', function () {
 
         describe('and work without errors', function () {
             var logFile = SANDBOX_PATH + 'hello.log';
+            if (process.platform === 'win32') {
+                logFile = logFile.replace(/\\/g, '/'); // sh interprets backslashes as escape sequences
+            }
             beforeEach(function () {
                 createHook(PROJECT_PRECOMMIT_HOOK + 'hello', 'echo "Hello, world! ${@:1}" > ' + logFile);
             });
@@ -108,17 +126,17 @@ describe('git-hook runner', function () {
             });
         });
 
-        describe('do not run git-ignored scripts from hooks directory', function () {
+        describe('and the hooks are git-ignored', function () {
             var ignoreFilename = 'ignore-me';
             var ignoreContent = ignoreFilename + '\n*.swp';
 
             beforeEach(function () {
                 fs.writeFileSync(GIT_IGNORE, ignoreContent);
-                fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + ignoreFilename, 'exit -1');
-                fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + 'test.swp', 'exit -1');
+                createHook(PROJECT_PRECOMMIT_HOOK + ignoreFilename, 'exit -1');
+                createHook(PROJECT_PRECOMMIT_HOOK + 'test.swp', 'exit -1');
             });
 
-            it('should ignore file with wrong permissions in hooks directory', function (done) {
+            it('should not run git-ignored scripts, regardless of permissions', function (done) {
                 gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
                     code.should.equal(0);
                     done();
