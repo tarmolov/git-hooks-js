@@ -8,7 +8,6 @@ var GIT_ROOT = SANDBOX_PATH + '.git/';
 var GIT_HOOKS = GIT_ROOT + 'hooks';
 var PRECOMMIT_HOOK_PATH = GIT_HOOKS + '/pre-commit';
 var PROJECT_PRECOMMIT_HOOK = SANDBOX_PATH + '.githooks/pre-commit/';
-var GIT_IGNORE = SANDBOX_PATH + '.gitignore';
 
 function createHook(path, content) {
     fs.writeFileSync(path, '#!/bin/bash\n' + content);
@@ -38,15 +37,39 @@ describe('git-hook runner', function () {
         });
 
         describe('and a hook is unexecutable', function () {
+            var oldConsoleWarn = console.warn;
+            var consoleLogOutput = '';
+            var logFile = SANDBOX_PATH + 'hello.log';
             beforeEach(function () {
-                var logFile = SANDBOX_PATH + 'hello.log';
-                fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + 'hello', '#!/bin/bash\n' + 'echo hello > ' + logFile);
+                var hookPath = PROJECT_PRECOMMIT_HOOK + 'hello';
+                fs.writeFileSync(hookPath, '#!/bin/bash\n' + 'echo hello > ' + logFile);
+                console.warn = function (str) {
+                    consoleLogOutput += str;
+                };
             });
 
-            it('should return an error', function (done) {
-                gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code, error) {
-                    code.should.equal(1);
-                    error.should.be.ok;
+            afterEach(function () {
+                console.warn = oldConsoleWarn;
+            });
+
+            it('should skip it', function (done) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
+                    code.should.equal(0);
+                    consoleLogOutput.should.match(/^\[GIT-HOOKS WARNING\]/);
+                    fs.existsSync(logFile).should.be.false;
+                    done();
+                });
+            });
+        });
+
+        describe('and directory in hooks directory is found', function () {
+            beforeEach(function () {
+                fsHelpers.makeDir(PROJECT_PRECOMMIT_HOOK + '/zzzz');
+            });
+
+            it('should skip it', function (done) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
+                    code.should.equal(0);
                     done();
                 });
             });
@@ -103,24 +126,6 @@ describe('git-hook runner', function () {
             it('should run a hook and return error', function (done) {
                 gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
                     code.should.equal(255);
-                    done();
-                });
-            });
-        });
-
-        describe('do not run git-ignored scripts from hooks directory', function () {
-            var ignoreFilename = 'ignore-me';
-            var ignoreContent = ignoreFilename + '\n*.swp';
-
-            beforeEach(function () {
-                fs.writeFileSync(GIT_IGNORE, ignoreContent);
-                fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + ignoreFilename, 'exit -1');
-                fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + 'test.swp', 'exit -1');
-            });
-
-            it('should ignore file with wrong permissions in hooks directory', function (done) {
-                gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
-                    code.should.equal(0);
                     done();
                 });
             });
