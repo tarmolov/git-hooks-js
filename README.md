@@ -22,6 +22,10 @@ You can do a lot of things with them:
 
 **Note.** When you use `git-hooks`, you should not modify `$GIT_DIR/hooks` directory manually because `git-hooks` will do it for you.
 
+## Supported platforms
+  * Unix
+  * macOS
+
 ## Install
 Install `git-hooks` in your project.
 ```bash
