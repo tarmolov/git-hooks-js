@@ -96,6 +96,25 @@ describe('git-hook runner', function () {
             });
         });
 
+        describe('more than one in known order', function () {
+            var hooks = ['03.foo', '01.bar', '02.baz'];
+            beforeEach(function () {
+                var logFile = SANDBOX_PATH + 'ordered.log';
+                hooks.forEach(function (name) {
+                    createHook(PROJECT_PRECOMMIT_HOOK + name, 'echo ' + name + '>> ' + logFile);
+                });
+            });
+
+            it('should run it one by one in known order', function (done) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
+                    code.should.equal(0);
+                    var logFile = SANDBOX_PATH + 'ordered.log';
+                    fs.readFileSync(logFile).toString().should.equal(hooks.sort().join('\n') + '\n');
+                    done();
+                });
+            });
+        });
+
         describe('and work without errors', function () {
             var logFile = SANDBOX_PATH + 'hello.log';
             beforeEach(function () {
