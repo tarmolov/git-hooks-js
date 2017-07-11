@@ -1,5 +1,6 @@
 require('chai').should();
 var fs = require('fs');
+var path = require('path');
 var gitHooks = require('../lib/git-hooks');
 var fsHelpers = require('../lib/fs-helpers');
 
@@ -11,13 +12,16 @@ var PROJECT_PRECOMMIT_HOOK = SANDBOX_PATH + '.githooks/pre-commit/';
 var POSTCOMMIT_HOOK_PATH = GIT_HOOKS + '/post-commit';
 var PROJECT_POSTCOMMIT_HOOK = SANDBOX_PATH + '.githooks/post-commit/';
 
-function createHook(path, content) {
-    fs.writeFileSync(path, '#!/bin/bash\n' + content);
-    fs.chmodSync(path, '0777');
+function createHook(hookPath, content) {
+    fs.writeFileSync(hookPath, '#!/bin/bash\n' + content);
+    fs.chmodSync(hookPath, '0777');
 }
 
-function createSymlinkHook(target, path) {
-    fs.symlinkSync(target, path);
+function createSymlinkHook(target, linkPath) {
+    fs.symlinkSync(target, linkPath);
+}
+function createSymlinkHookRelative(target, linkPath) {
+    fs.symlinkSync(path.relative(path.dirname(linkPath), target), linkPath);
 }
 
 describe('git-hook runner', function () {
@@ -130,6 +134,29 @@ describe('git-hook runner', function () {
             beforeEach(function () {
                 createHook(PROJECT_PRECOMMIT_HOOK + 'hello', 'echo "Hello, world! ${@:1}" > ' + logFile);
                 createSymlinkHook(PROJECT_PRECOMMIT_HOOK + 'hello', PROJECT_POSTCOMMIT_HOOK + 'hello');
+            });
+
+            it('should pass all arguments to them', function (done) {
+                gitHooks.run(POSTCOMMIT_HOOK_PATH, ['I', 'am', 'working', 'properly!'], function () {
+                    fs.readFileSync(logFile).toString().should.equal('Hello, world! I am working properly!\n');
+                    done();
+                });
+            });
+
+            it('should run a hook with success status', function (done) {
+                gitHooks.run(POSTCOMMIT_HOOK_PATH, [], function (code) {
+                    code.should.equal(0);
+                    fs.readFileSync(logFile).toString().should.equal('Hello, world! \n');
+                    done();
+                });
+            });
+        });
+
+        describe('and work with relative path symbolic links without errors', function () {
+            var logFile = SANDBOX_PATH + 'hello.log';
+            beforeEach(function () {
+                createHook(PROJECT_PRECOMMIT_HOOK + 'hello', 'echo "Hello, world! ${@:1}" > ' + logFile);
+                createSymlinkHookRelative(PROJECT_PRECOMMIT_HOOK + 'hello', PROJECT_POSTCOMMIT_HOOK + 'hello');
             });
 
             it('should pass all arguments to them', function (done) {
