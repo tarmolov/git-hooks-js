@@ -175,6 +175,57 @@ describe('git-hook runner', function () {
             });
         });
 
+        describe('and work with symbolic links of arbitrary depth without errors', function () {
+            var logFile = SANDBOX_PATH + 'hello.log';
+            beforeEach(function () {
+                createHook(PROJECT_PRECOMMIT_HOOK + 'hello', 'echo "Hello, world! ${@:1}" > ' + logFile);
+                createSymlinkHookRelative(PROJECT_PRECOMMIT_HOOK + 'hello', PROJECT_PRECOMMIT_HOOK + 'hello2');
+                createSymlinkHookRelative(PROJECT_PRECOMMIT_HOOK + 'hello2', PROJECT_PRECOMMIT_HOOK + 'hello3');
+                createSymlinkHookRelative(PROJECT_PRECOMMIT_HOOK + 'hello3', PROJECT_PRECOMMIT_HOOK + 'hello4');
+                createSymlinkHookRelative(PROJECT_PRECOMMIT_HOOK + 'hello4', PROJECT_POSTCOMMIT_HOOK + 'hello');
+            });
+
+            it('should pass all arguments to them', function (done) {
+                gitHooks.run(POSTCOMMIT_HOOK_PATH, ['I', 'am', 'working', 'properly!'], function () {
+                    fs.readFileSync(logFile).toString().should.equal('Hello, world! I am working properly!\n');
+                    done();
+                });
+            });
+
+            it('should run a hook with success status', function (done) {
+                gitHooks.run(POSTCOMMIT_HOOK_PATH, [], function (code) {
+                    code.should.equal(0);
+                    fs.readFileSync(logFile).toString().should.equal('Hello, world! \n');
+                    done();
+                });
+            });
+        });
+
+        describe('and detect a broken symbolic links without errors', function () {
+            var oldConsoleWarn = console.warn;
+            var consoleLogOutput = '';
+            var logFile = SANDBOX_PATH + 'hello.log';
+            beforeEach(function () {
+                console.warn = function (str) {
+                    consoleLogOutput += str;
+                };
+                createSymlinkHookRelative(PROJECT_PRECOMMIT_HOOK + 'hello', PROJECT_POSTCOMMIT_HOOK + 'hello');
+            });
+
+            afterEach(function () {
+                console.warn = oldConsoleWarn;
+            });
+
+            it('should silently skip them', function (done) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
+                    code.should.equal(0);
+                    consoleLogOutput.should.equal('');
+                    fs.existsSync(logFile).should.be.false;
+                    done();
+                });
+            });
+        });
+
         describe('and a symlinked hook is unexecutable', function () {
             var oldConsoleWarn = console.warn;
             var consoleLogOutput = '';
