@@ -153,20 +153,15 @@ describe('git-hook runner', function () {
         describe('and a hook is unexecutable but is a JavaScript file', function () {
             var logFile = SANDBOX_PATH + 'hello.log';
             beforeEach(function () {
-                fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + 'hello.js', 'echo "Hello, world! ${@:1}" > ' + logFile);
-            });
-
-            it('should pass all arguments to them', function (done) {
-                gitHooks.run(PRECOMMIT_HOOK_PATH, ['I', 'am', 'working', 'properly!'], function () {
-                    fs.readFileSync(logFile).toString().should.equal('Hello, world! I am working properly!\n');
-                    done();
-                });
+                var content = 'var fs = require("fs"); ' +
+                    'fs.writeFileSync("' + logFile.replace(/\\/g, '\\\\') + '", "Hello, world!");';
+                fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + 'hello.js', content);
             });
 
             it('should run a hook with success status', function (done) {
                 gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
                     code.should.equal(0);
-                    fs.readFileSync(logFile).toString().should.equal('Hello, world! \n');
+                    fs.readFileSync(logFile).toString().should.equal('Hello, world!');
                     done();
                 });
             });
