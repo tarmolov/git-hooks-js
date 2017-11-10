@@ -166,5 +166,21 @@ describe('git-hook runner', function () {
                 });
             });
         });
+
+        describe('and a hook is unexecutable but is a bash script file', function () {
+            var logFile = SANDBOX_PATH + 'hello.log';
+            beforeEach(function () {
+                var content = 'echo "Hello, world!" > ' + logFile.replace(/\\/g, '\\\\');
+                fs.writeFileSync(PROJECT_PRECOMMIT_HOOK + 'hello.sh', content);
+            });
+
+            it('should run a hook with success status', function (done) {
+                gitHooks.run(PRECOMMIT_HOOK_PATH, [], function (code) {
+                    code.should.equal(0);
+                    fs.readFileSync(logFile).toString().should.equal('Hello, world!\n');
+                    done();
+                });
+            });
+        });
     });
 });
