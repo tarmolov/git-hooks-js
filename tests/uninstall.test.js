@@ -38,14 +38,14 @@ describe('--uninstall', function () {
         });
     });
 
-    describe('when git-hooks is installed', function () {
+    describe('when backup is absent', function () {
         beforeEach(function () {
             fsHelpers.makeDir(GIT_HOOKS);
         });
 
-        it('should remove hooks directory', function () {
+        it('should not remove hooks directory', function () {
             gitHooks.uninstall(SANDBOX_PATH);
-            fsHelpers.exists(GIT_HOOKS).should.be.false;
+            fsHelpers.exists(GIT_HOOKS).should.be.true;
         });
     });
 
