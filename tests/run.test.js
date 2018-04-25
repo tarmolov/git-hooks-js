@@ -1,9 +1,10 @@
 require('chai').should();
+var execSync = require('child_process').execSync;
 var fs = require('fs');
 var gitHooks = require('../lib/git-hooks');
 var fsHelpers = require('../lib/fs-helpers');
 
-var SANDBOX_PATH = __dirname + '/tmp-sandbox/';
+var SANDBOX_PATH = '/tmp/tmp-sandbox/';
 var GIT_ROOT = SANDBOX_PATH + '.git/';
 var GIT_HOOKS = GIT_ROOT + 'hooks';
 var PRECOMMIT_HOOK_PATH = GIT_HOOKS + '/pre-commit';
@@ -16,8 +17,8 @@ function createHook(path, content) {
 
 describe('git-hook runner', function () {
     beforeEach(function () {
-        fsHelpers.makeDir(GIT_ROOT);
-        gitHooks.install(SANDBOX_PATH);
+        fsHelpers.makeDir(SANDBOX_PATH);
+        execSync('git init', {cwd: SANDBOX_PATH});
     });
 
     afterEach(function () {

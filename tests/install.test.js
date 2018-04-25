@@ -1,15 +1,17 @@
 require('chai').should();
+var execSync = require('child_process').execSync;
 var gitHooks = require('../lib/git-hooks');
 var fsHelpers = require('../lib/fs-helpers');
 
-var SANDBOX_PATH = __dirname + '/tmp-sandbox/';
+var SANDBOX_PATH = '/tmp/tmp-sandbox/';
 var GIT_ROOT = SANDBOX_PATH + '.git/';
 var GIT_HOOKS = GIT_ROOT + 'hooks';
 var GIT_HOOKS_OLD = GIT_ROOT + 'hooks.old';
 
 describe('--install', function () {
     beforeEach(function () {
-        fsHelpers.makeDir(GIT_ROOT);
+        fsHelpers.makeDir(SANDBOX_PATH);
+        execSync('git init', {cwd: SANDBOX_PATH});
     });
 
     afterEach(function () {
@@ -35,10 +37,6 @@ describe('--install', function () {
     });
 
     describe('when some hooks already exist', function () {
-        beforeEach(function () {
-            fsHelpers.makeDir(GIT_HOOKS);
-        });
-
         it('should backup hooks before installation', function () {
             gitHooks.install(SANDBOX_PATH);
             fsHelpers.exists(GIT_HOOKS_OLD).should.be.true;
