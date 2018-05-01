@@ -1,5 +1,5 @@
 require('chai').should();
-var execSync = require('child_process').execSync;
+var exec = require('child_process').exec;
 var gitHooks = require('../lib/git-hooks');
 var fsHelpers = require('../lib/fs-helpers');
 
@@ -9,9 +9,14 @@ var GIT_HOOKS = GIT_ROOT + 'hooks';
 var GIT_HOOKS_OLD = GIT_ROOT + 'hooks.old';
 
 describe('--uninstall', function () {
-    beforeEach(function () {
+    beforeEach(function (done) {
         fsHelpers.makeDir(SANDBOX_PATH);
-        execSync('git init', {cwd: SANDBOX_PATH});
+        exec('git init', {cwd: SANDBOX_PATH}, function (err) {
+            if (err) {
+                throw err;
+            }
+            done();
+        });
     });
 
     afterEach(function () {
