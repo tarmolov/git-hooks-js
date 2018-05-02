@@ -52,7 +52,7 @@
     "istanbul": "0.4.5",
     "jscs": "1.13.1",
     "jshint": "2.9.5",
-    "mocha": "2.2.5"
+    "mocha": "5.1.1"
   },
   "license": "MIT"
 }
