@@ -32,7 +32,7 @@
     "prepare-commit-msg"
   ],
   "engines": {
-    "node": ">=0.8.x"
+    "node": ">=5"
   },
   "engine-strict": true,
   "scripts": {
