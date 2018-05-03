@@ -2,8 +2,11 @@ require('chai').should();
 var execSync = require('child_process').execSync;
 var gitHooks = require('../lib/git-hooks');
 var fsHelpers = require('../lib/fs-helpers');
+var tmp = require('tmp');
 
-var SANDBOX_PATH = '/tmp/tmp-sandbox/';
+var tmpDir = tmp.dirSync();
+
+var SANDBOX_PATH = tmpDir.name + '/git-hooks-sandbox/';
 var GIT_ROOT = SANDBOX_PATH + '.git/';
 var GIT_HOOKS = GIT_ROOT + 'hooks';
 var GIT_HOOKS_OLD = GIT_ROOT + 'hooks.old';

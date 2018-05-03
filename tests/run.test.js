@@ -3,8 +3,11 @@ var execSync = require('child_process').execSync;
 var fs = require('fs');
 var gitHooks = require('../lib/git-hooks');
 var fsHelpers = require('../lib/fs-helpers');
+var tmp = require('tmp');
 
-var SANDBOX_PATH = '/tmp/tmp-sandbox/';
+var tmpDir = tmp.dirSync();
+
+var SANDBOX_PATH = tmpDir.name + '/git-hooks-sandbox/';
 var GIT_ROOT = SANDBOX_PATH + '.git/';
 var GIT_HOOKS = GIT_ROOT + 'hooks';
 var PRECOMMIT_HOOK_PATH = GIT_HOOKS + '/pre-commit';
