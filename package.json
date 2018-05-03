@@ -32,7 +32,7 @@
     "prepare-commit-msg"
   ],
   "engines": {
-    "node": ">=0.8.x"
+    "node": ">=5"
   },
   "engine-strict": true,
   "scripts": {
@@ -48,11 +48,11 @@
     "lib"
   ],
   "devDependencies": {
-    "chai": "2.3.0",
-    "istanbul": "0.3.17",
-    "jscs": "1.13.1",
-    "jshint": "2.8.0",
-    "mocha": "2.2.5"
+    "chai": "4.1.2",
+    "istanbul": "0.4.5",
+    "jscs": "2.11.0",
+    "jshint": "2.9.5",
+    "mocha": "5.1.1"
   },
   "license": "MIT"
 }
