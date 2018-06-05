@@ -26,6 +26,17 @@ describe('--install', function () {
         fsHelpers.exists(GIT_HOOKS).should.be.true;
     });
 
+    describe('when git repo is missing its hooks folder', function () {
+        beforeEach(function () {
+            fsHelpers.removeDir(GIT_ROOT + '/hooks');
+        });
+
+        it('should install hooks', function () {
+            gitHooks.install(SANDBOX_PATH);
+            fsHelpers.exists(GIT_HOOKS).should.be.true;
+        });
+    });
+
     describe('when it is run not inside a git repo', function () {
         beforeEach(function () {
             fsHelpers.removeDir(GIT_ROOT);
