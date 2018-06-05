@@ -37,7 +37,7 @@ describe('--uninstall', function () {
 
         it('should throw an error', function () {
             var fn = function () {
-                gitHooks.install(SANDBOX_PATH);
+                gitHooks.uninstall(SANDBOX_PATH);
             };
             fn.should.throw(Error);
         });
